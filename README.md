@@ -9,9 +9,11 @@
 
 >分包说明：  
 　　algorithm  算法  
+　　　　codinginterviewguide  算法面试指南
 　　book  书籍学习  
 　　　　artofconcurrency  并发编程的艺术  
 　　　　easycoding  Ali Java开发手册  
+　　　　jcip   xx手册  
 　　design  设计模式  
 　　java8   Java 8   
 　　utils   工具             
