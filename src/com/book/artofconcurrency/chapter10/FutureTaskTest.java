@@ -1,4 +1,4 @@
-package com.book.artofconcurrency.chapter10;
+package main.java.com.book.artofconcurrency.chapter10;
 
 import java.util.concurrent.*;
 
