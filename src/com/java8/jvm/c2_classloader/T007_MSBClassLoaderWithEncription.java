@@ -10,7 +10,7 @@ import java.io.IOException;
 
 //�Զ�����������кܶ��ַ���, ��򵥵�һ��     �̳�ClassLoader
 //class����     ���һ�¼���  ���һ�½���
-public class T007_MSBClassLoader extends ClassLoader {
+public class T007_MSBClassLoaderWithEncription extends ClassLoader {
 
     //
     public static int seed = 0B10110110;
@@ -44,7 +44,7 @@ public class T007_MSBClassLoader extends ClassLoader {
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, IOException {
         encFile("com.jvm.Hello");
 
-        ClassLoader l = new T007_MSBClassLoader();
+        ClassLoader l = new T007_MSBClassLoaderWithEncription();
         Class clazz = l.loadClass("com.java8.jvm.c2_classloader.Hello");
         Class clazz1 = l.loadClass("com.java8.jvm.c2_classloader.Hello");
         System.out.println(clazz == clazz1);
