@@ -24,5 +24,17 @@ public class T005_LoadClassByHand {
 
         //利用类加载器加载资源, 参考坦克图片的加载
         //T005_LoadClassByHand.class.getClassLoader().getResourceAsstream("");
+
+
+        /**
+         * 什么时候我们需要自己去加载一个类?
+         *      Tomcat在load自己的那部分肯定是要load自定义的那些class
+         *      JRbel 热部署需要一个classloader手动的load到内存里去
+         *      spring动态代理,是一个新的class, 当要用的时候把新的load内存里
+         *
+         * 每一个classloader它内部的 parent是一个final值,改不了
+         *
+         *
+         */
     }
 }

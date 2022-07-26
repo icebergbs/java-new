@@ -8,11 +8,56 @@ import java.io.IOException;
 
 /**
  * 自定义类加载器
+ *  1. 继承ClassLoader
+ *  2. 重写模板方法 findClass
+ *      调用 defineClass
+ *
+ *
+ *  ClassLoader源码解析
+ *  protected Class<?> loadClass(String name, boolean resolve)
+ *     {
+ *         synchronized (getClassLoadingLock(name)) {
+ *             // First, check if the class has already been loaded
+ *             Class<?> c = findLoadedClass(name);
+ *             if (c == null) {
+ *                 try {
+ *                     if (parent != null) {
+ *                         c = parent.loadClass(name, false);
+ *                     } else {
+ *                         c = findBootstrapClassOrNull(name);
+ *                     }
+ *                 } catch (ClassNotFoundException e) {
+ *                     // ClassNotFoundException thrown if class not found
+ *                     // from the non-null parent class loader
+ *                 }
+ *
+ *                 if (c == null) {
+ *                     // If still not found, then invoke findClass in order
+ *                     // to find the class.
+ *                     long t1 = System.nanoTime();
+ *                     c = findClass(name);
+ *
+ *                     // this is the defining class loader; record the stats
+ *                     sun.misc.PerfCounter.getParentDelegationTime().addTime(t1 - t0);
+ *                     sun.misc.PerfCounter.getFindClassTime().addElapsedTimeFrom(t1);
+ *                     sun.misc.PerfCounter.getFindClasses().increment();
+ *                 }
+ *             }
+ *             if (resolve) {
+ *                 resolveClass(c);
+ *             }
+ *             return c;
+ *         }
+ *
+ *   1. 上来先找,找不到去父类找, 一圈都找不到, 只能回来自己加载
+ *   2. findclass 权限是 protected, 只能在子类里访问
+ *   3. 所以自定义classloader只用重写 findclass(),  这个模式就是 钩子函数模板方法
  */
 //第一点继承ClassLoader
 public class T006_MSBClassLoader extends ClassLoader {
 
     //然后重写findClass方法, 然后找到要load进来的二进制内容, load完之后在转换成对象
+    // FileInputStream > InputStream,   ByteArryOutputStream 转换成一个二进制字节数组,再toByteArray(),再用defineClass来变成一个class类对象
     @Override
     protected Class<?> findClass(String name) throws ClassNotFoundException {
         File file = new File("/home/project/javaee/java-new/src", name.replace(".", "/").concat(".class"));
@@ -25,7 +70,7 @@ public class T006_MSBClassLoader extends ClassLoader {
             }
             byte[] bytes = baos.toByteArray();
             baos.close();
-            fis.close();
+            fis.close();  //不严谨
             return defineClass(name, bytes, 0, bytes.length);
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block

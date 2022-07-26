@@ -8,14 +8,14 @@ public class T0011_ClassReloading1 {
 
         msbClassLoader = null;
         System.out.println(clazz.hashCode());
-        //��һ��classloader ��Ϊ��
+        //第一个 classloader设为空
         msbClassLoader = null;
-        //��newһ��classloader
+        //在 new一个 classloader
         msbClassLoader = new T006_MSBClassLoader();
-        //��newͬ����һ��class
+        //在 new 同样的一个class
         Class clazz1 = msbClassLoader.loadClass("com.java8.jvm.c2_classloader.Hello");
         System.out.println(clazz1.hashCode());
-        //����class�Ƿ���ȣ���     true :˫��ί�ɡ�������ô���������������ø���ȥ�ң��ҵ��˾Ͳ���ȥ���¼���
+        //两个class是否相等?  true应为双亲委派, 不管怎么样操作,他都会让父亲去找, 找不到了就不回去重新加载
         System.out.println(clazz == clazz1);
 
     }

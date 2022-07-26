@@ -8,11 +8,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 
-//�Զ�����������кܶ��ַ���, ��򵥵�һ��     �̳�ClassLoader
-//class����     ���һ�¼���  ���һ�½���
+
 public class T007_MSBClassLoaderWithEncription extends ClassLoader {
 
-    //
+    //异或种子值
     public static int seed = 0B10110110;
 
     //��дfindClass����,Ȼ���ҵ�Ҫload�����Ķ���������. load��֮����ת���ɶ���
@@ -23,6 +22,7 @@ public class T007_MSBClassLoaderWithEncription extends ClassLoader {
             FileInputStream fis = new FileInputStream(file);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             int b = 0;
+            //自己想要看就在根据种子异或自己,就相当于解密了
             while ((b = fis.read()) != 0) {
                 baos.write(b ^ seed);
             }
@@ -41,6 +41,14 @@ public class T007_MSBClassLoaderWithEncription extends ClassLoader {
         return super.findClass(name);
     }
 
+    /**
+     * 一般class 就是一个二进制流, 然后自己编译好了,自己手动加密, 怎么加密, 我采用了一个本方法就是异或,异或一下加密在异或一下解密
+     * @param args
+     * @throws ClassNotFoundException
+     * @throws InstantiationException
+     * @throws IllegalAccessException
+     * @throws IOException
+     */
     public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, IOException {
         encFile("com.jvm.Hello");
 
@@ -65,7 +73,9 @@ public class T007_MSBClassLoaderWithEncription extends ClassLoader {
         FileOutputStream fos = new FileOutputStream(new File("G:/jee-ecl/Java8/bin/", name.replaceAll("\\.", "/").concat(".msbclass")));
 
         int b = 0;
+        //把文件所有内容读出来
         while ((b = fis.read()) != -1) {
+            //然后进行异或, 异或完在写回去
             fos.write(b ^ seed);
         }
 
