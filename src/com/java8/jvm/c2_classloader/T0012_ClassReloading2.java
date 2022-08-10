@@ -39,7 +39,7 @@ public class T0012_ClassReloading2 {
     }
 
     //所以tomcat这么干的, 直接webapplication的整个classloader全部干掉, 重新在加载一遍
-    public static void main(String[] args) throws ClassNotFoundException {
+    public static void main(String[] args) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
         MyLocader m = new MyLocader();
         Class clazz = m.loadClass("com.java8.jvm.c2_classloader.Hello");
 
