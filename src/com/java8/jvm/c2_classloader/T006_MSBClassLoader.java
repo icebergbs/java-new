@@ -1,10 +1,7 @@
 package com.java8.jvm.c2_classloader;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
+import java.net.URL;
 
 /**
  * 自定义类加载器
@@ -60,17 +57,18 @@ public class T006_MSBClassLoader extends ClassLoader {
     // FileInputStream > InputStream,   ByteArryOutputStream 转换成一个二进制字节数组,再toByteArray(),再用defineClass来变成一个class类对象
     @Override
     protected Class<?> findClass(String name) throws ClassNotFoundException {
-        File file = new File("/home/project/javaee/java-new/src", name.replace(".", "/").concat(".class"));
+        File file = new File("D:/project/demo/java-new/src/", name.replace(".", "/").concat(".class"));
         try {
             FileInputStream fis = new FileInputStream(file);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             int b = 0;
-            while ((b = fis.read()) != 0) {
+            while ((b = fis.read()) != -1) {
                 baos.write(b);
             }
             byte[] bytes = baos.toByteArray();
             baos.close();
             fis.close();  //不严谨
+
             return defineClass(name, bytes, 0, bytes.length);
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block

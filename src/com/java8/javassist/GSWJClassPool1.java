@@ -22,9 +22,9 @@ public class GSWJClassPool1 {
     public static void main(String[] args) throws NotFoundException, CannotCompileException, IOException {
         ClassPool pool = ClassPool.getDefault();
         //创建无成员方法   CtNewMethod附带的工厂方法创建，然后利用CtClass.addMethod()将其追加
-        pool.makeClass("com.java8.javassist.java.Detach");
-        CtClass detach = pool.get("com.java8.javassist.java.Detach");
-        detach.writeFile("./src/main/java/");
+        pool.makeClass("com.java8.javassist.clazz.Detach");
+        CtClass detach = pool.get("com.java8.javassist.clazz.Detach");
+        detach.writeFile("./src/");
         //1. 避免内存溢出
         //从ClassPool 移除 CtClass对象
         detach.detach();
