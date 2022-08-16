@@ -34,6 +34,7 @@ public class C02_1x_在单链表和双链表中删除倒数第K个节点 {
      *                  2. 当K等于0时, 移动停止, 移动到的节点就是要删除节点的前一个节点
      *                  第一次遍历后, K的值变为K-N, 第二次遍历时, K的值不断+1,加到0就停止遍历,
      *                  第二次遍历会停到第N-K个节点的位置.     K - N + x = 0 ;  x = N-K
+     *
      */
     class Node {
         public int value;
@@ -69,6 +70,53 @@ public class C02_1x_在单链表和双链表中删除倒数第K个节点 {
         return head;
 
     }
+
+    /**
+     * 双向链表和单项链表的处理方式几乎是一样的, 注意last指针的重联即可
+     * @param
+     */
+    class DoubleNode {
+        public int value;
+        public DoubleNode last;
+        public DoubleNode next;
+
+        public DoubleNode(int data) {
+            this.value = data;
+        }
+    }
+
+    public DoubleNode removeLastKthNode(DoubleNode head, int lastKth) {
+        if (head == null || lastKth < 1) {
+            return head;
+        }
+
+        DoubleNode cur = head;
+        while (cur != null) {
+            lastKth --;
+            cur = cur.next;
+        }
+
+        if (lastKth == 0) {
+            head = head.next;
+            head.last = null;
+        }
+
+        if (lastKth < 0) {
+            cur = head;
+            while (++lastKth != 0) {
+                cur = cur.next;
+            }
+            DoubleNode newNext = cur.next.next;
+            cur.next = newNext;
+            if (newNext != null) {
+                newNext.last = cur;
+            }
+        }
+        return head;
+
+    }
+
+
 
 
     public static void main(String[] args) {
