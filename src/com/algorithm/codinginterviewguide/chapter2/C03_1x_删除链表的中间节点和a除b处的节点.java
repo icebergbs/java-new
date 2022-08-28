@@ -92,6 +92,33 @@ public class C03_1x_删除链表的中间节点和a除b处的节点 {
     }
 
     /**
-     *
+     * 根据链表的长度n, 以及a与b的值,决定删除节点:
+     *   计算:  double r = ((double)(a * n) /((double)b)
+     *          r 向上取整
      */
+    public Node removeByRatic(Node head, int a, int b) {
+        if (a < 1 || a > b) {
+            return head;
+        }
+        int n = 0;
+        Node cur = head;
+        while (cur != null) {
+            n++;
+            cur = cur.next;
+        }
+        n = (int) Math.ceil(((double) (a * n)) / (double) b);
+        if (n == 1) {
+            head = head.next;
+        }
+        if (n > 1) {
+            cur = head;
+            while (--n != 1) {
+                cur = cur.next;
+            }
+            cur.next = cur.next.next;
+        }
+        return head;
+    }
+
+
 }
