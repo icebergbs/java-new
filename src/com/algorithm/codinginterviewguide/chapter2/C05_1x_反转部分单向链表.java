@@ -64,6 +64,14 @@ public class C05_1x_反转部分单向链表 {
         return head;
     }
 
+    /**
+     * 解答：
+     *
+     * @param head
+     * @param from
+     * @param to
+     * @return
+     */
     public Node reservePart(Node head, int from , int to) {
         int len = 0;
         Node node1 = head;
