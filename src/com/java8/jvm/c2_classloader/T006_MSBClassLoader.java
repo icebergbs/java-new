@@ -1,5 +1,8 @@
 package com.java8.jvm.c2_classloader;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.*;
 import java.net.URL;
 
@@ -52,7 +55,7 @@ import java.net.URL;
  */
 //第一点继承ClassLoader
 public class T006_MSBClassLoader extends ClassLoader {
-
+    private static final Logger LOG = LoggerFactory.getLogger(T006_MSBClassLoader.class);
     //然后重写findClass方法, 然后找到要load进来的二进制内容, load完之后在转换成对象
     // FileInputStream > InputStream,   ByteArryOutputStream 转换成一个二进制字节数组,再toByteArray(),再用defineClass来变成一个class类对象
     @Override
@@ -66,6 +69,7 @@ public class T006_MSBClassLoader extends ClassLoader {
                 baos.write(b);
             }
             byte[] bytes = baos.toByteArray();
+            System.out.println(bytes);
             baos.close();
             fis.close();  //不严谨
 
@@ -86,12 +90,13 @@ public class T006_MSBClassLoader extends ClassLoader {
         ClassLoader l = new T006_MSBClassLoader();
         Class clazz = l.loadClass("com.java8.jvm.c2_classloader.Hello");
         Class clazz1 = l.loadClass("com.java8.jvm.c2_classloader.Hello");
-        System.out.println(clazz == clazz1);
+
 
         Hello hello = (Hello) clazz.newInstance();
         hello.m();
 
         //是AppClassLoader
+        System.out.println(l);
         System.out.println(l.getClass().getClassLoader());
         System.out.println(l.getParent());
         System.out.println(getSystemClassLoader());
