@@ -2,6 +2,7 @@ package com.algorithm.codinginterviewguide.chapter1;
 
 
 import java.util.LinkedList;
+import java.util.Stack;
 
 /**
  * 题目:
@@ -111,17 +112,35 @@ public class C10_1x_可见的山峰对数量 {
      *           不会被其他高度的山峰释放
      *
      *           在最后清算阶段，假设从栈中弹出的记录为(X,K), 那么产生山峰对的逻辑如下：
-     *              1） 如果发现当前记录位于第1小阶段，产生山峰对为：如果k==1, 产生2对: 如果k>1,产生2*K + C(2,K)对
+     *              1） 如果发现当前记录位于第1小阶段，产生山峰对为：如果k==1, 产生2对:
+     *                  如果k>1,产生2*K + C(2,K)对。这是因为（X,K）这个记录弹出之后，剩下的记录大于或等于2条，而整个图形是环，说明这K个x
+     *                  在last方向和 next方向一定能找到大于它们高度的山，
+     *              2） 如果发现当前记录位于第2小阶段，那么需要查看栈中的最后一条记录，假设最后一条记录为（Y,M）.
+     *                  如果M==1,产生1*M+C(2,M)对；
+     *                  如果M>1,产生2*M+C(2,M)对。
+     *              3)  如果发现当前记录位于第3小阶段，这X一定是环中最大值。 根据”小找大“的方式，对外不产生山峰对，只是K个x内部产生山峰对，
+     *                  如果K==1,产生0对； 如果K>1, 产生C(2,K)对
+     *            根据单调栈的性质，全部过程的时间复杂度为O(N)
      *
      *
-     *
-     *
-     *
-     *
-     *
-     *
-     * @param args
+     * @param arr
      */
+
+    public int getVisibleNum(int[] arr) {
+        int maxIndex = 0;
+        for (int i=0; i< arr.length; i++) {
+            maxIndex = arr[maxIndex] < arr[i] ? i : maxIndex;
+        }
+        Stack<Record> stack = new Stack<>();
+        Record maxRecord = new Record(arr[maxIndex]);
+        stack.push(maxRecord);
+        maxIndex++;
+        for (int i = 0; i < arr.length - 1; i++) {
+            int curValue = arr[maxIndex % arr.length];
+
+        }
+        return 0;
+    }
 
     public static void main(String[] args) {
 
