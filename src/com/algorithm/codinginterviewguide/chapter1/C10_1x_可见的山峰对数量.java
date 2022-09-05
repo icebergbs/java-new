@@ -126,7 +126,8 @@ public class C10_1x_可见的山峰对数量 {
      * @param arr
      */
 
-    public int getVisibleNum(int[] arr) {
+    public int getVisibleNumXX(int[] arr) {
+        int num = 0;
         int maxIndex = 0;
         for (int i=0; i< arr.length; i++) {
             maxIndex = arr[maxIndex] < arr[i] ? i : maxIndex;
@@ -137,10 +138,120 @@ public class C10_1x_可见的山峰对数量 {
         maxIndex++;
         for (int i = 0; i < arr.length - 1; i++) {
             int curValue = arr[maxIndex % arr.length];
+            Record topRecord = stack.peek();
+            if (topRecord.getValue() == curValue) {
+                topRecord.setTimes(topRecord.getTimes() + 1);
+            }
+            if (topRecord.getValue() > curValue) {
+                Record newRecord = new Record(curValue);
+                stack.push(newRecord);
+            }
+            if (topRecord.getValue() < curValue) {
+                while (stack.peek() != null && stack.peek().getValue() < curValue) {
+                    Record lastRecord = stack.pop();
+                    if (lastRecord.getTimes() == 1) {
+                        num += 2;
+                    } else {
+                        num = 2*lastRecord.getTimes() + getInternalSum(lastRecord.getTimes());
+                    }
+                }
+            }
 
         }
-        return 0;
+        if (!stack.isEmpty()) {
+            while (stack.peek() != null) {
+                Record lastRecord = stack.peek();
+                if (stack.size() > 2) {
+                    if (lastRecord.getTimes() == 1) {
+                        num += 2;
+                    } else {
+                        num = 2*lastRecord.getTimes() + getInternalSum(lastRecord.getTimes());
+                    }
+                } else if (stack.size() == 2) {
+                    if (lastRecord.getTimes() == 1) {
+                        num += 3;
+                    } else {
+                        num = 2*lastRecord.getTimes() + getInternalSum(lastRecord.getTimes());
+                    }
+                } else {
+                    if (lastRecord.getTimes() > 0) {
+                        num += getInternalSum(lastRecord.getTimes());
+                    }
+                }
+            }
+        }
+        return num;
     }
+
+
+
+    public int getVisibleNum(int[] arr) {
+        if (arr == null || arr.length < 2) {
+            return 0;
+        }
+        int size = arr.length;
+        int maxIndex = 0;
+        //先在环中找到其中一个最大值的位置，哪一个都行
+        for (int i = 0; i < size; i++) {
+            maxIndex = arr[maxIndex] < arr[i] ? i : maxIndex;
+        }
+        Stack<Record> stack = new Stack<>();
+        //先把（最大值， 1），这个记录放入栈中
+        Record record = new Record(arr[maxIndex]);
+        stack.push(record);
+        //从最大值位置的下一个位置开始沿next方向遍历
+        int index = nextIndex(maxIndex, size);
+        //用 "小找大“的方式统计所有可见山峰对
+        int res = 0;
+        //遍历阶段开始，当index再次回到maxIndex的时候，说明转了一圈，遍历阶段就结束
+        while (index != maxIndex) {
+            //当前数字arr[index] 要进栈，判断会不会破坏第一维的数字从顶到底依次变大
+            //如果破坏了，就依次弹出栈顶记录，并计算山峰对数量
+            while (stack.peek().value < arr[index]) {
+                int k = stack.pop().times;
+                //弹出记录为（x,K), 如果k==1, 产生2对
+                //如果k > 1, 产生2*k + c(2,K)对
+                res += getInternalSum(k) + 2*k;
+            }
+
+            //当前数字arr[index] 要进入栈了， 如果和当前栈顶数字一样就合并
+            // 比一样就把记录（arr[index], 1)放入栈中
+            if (stack.peek().value == arr[index]) {
+                stack.peek().times++;
+            } else {
+                stack.push(new Record(arr[index]));
+            }
+            index = nextIndex(index, size);
+        }
+
+        //清算阶段开始
+        //清算阶段的第1小阶段
+        while (stack.size() > 2) {
+            int times = stack.pop().times;
+            res += getInternalSum(times) + 2*times;
+        }
+        //清算阶段的第2小阶段
+        if (stack.size() == 2) {
+            int times = stack.pop().times;
+            res += getInternalSum(times)
+                    + (stack.peek().times == 1 ? times : 2*times);
+        }
+        //清算阶段的第3小阶段
+        res += getInternalSum(stack.pop().times);
+        return res;
+
+    }
+
+    //如果K==1, 返回0； 如果k>1, 返回C(2,k)
+    public int getInternalSum(int k) {
+        return k == 1 ? 0 : (k * (k - 1) / 2);
+    }
+
+    //环形数组中当前位置为i, 数组长度为size, 返回i的下一个位置
+    public int nextIndex(int i, int size) {
+        return i < (size - 1) ? (i + 1) : 0;
+    }
+
 
     public static void main(String[] args) {
 
@@ -156,5 +267,21 @@ class Record {
     public Record(int value) {
         this.value = value;
         this.times = 1;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
+    }
+
+    public int getTimes() {
+        return times;
+    }
+
+    public void setTimes(int times) {
+        this.times = times;
     }
 }
