@@ -27,7 +27,39 @@ public class C06_1x_环形单链表的约瑟夫问题 {
     }
 
     public Node josephusKill(Node head, int m) {
+        if (m < 1) {
+            return null;
+        }
+        if (head == null || head.next == null) {
+            return head;
+        }
+        if (m == 1) {
+            Node parentNode = null;
+            Node curNode = head;
+            while (curNode.next != head) {
+                parentNode = curNode;
+                curNode = curNode.next;
+            }
+            parentNode.next = null;
+            curNode.next = null;
+            return curNode;
+        }
 
-        return null;
+        int num = 1;
+        Node parantNode = null;
+        Node curNode = head;
+        while (curNode.next != null && curNode.next != curNode) {
+            if (num == m) {
+                //删除节点
+                parantNode.next = curNode.next;
+                curNode = parantNode.next;
+                num = 1;
+            } else {
+                parantNode = curNode;
+                curNode = curNode.next;
+            }
+            num++;
+        }
+        return curNode;
     }
 }
