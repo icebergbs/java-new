@@ -62,4 +62,40 @@ public class C06_1x_环形单链表的约瑟夫问题 {
         }
         return curNode;
     }
+
+    /**
+     *普通解法：
+     *  1. 如果链表为空或者链表节点数为1， 或者m的值小于1， 则不用调整直接返回
+     *  2. 在环形链表中遍历每个节点，不断转圈，不断让每个节点报数
+     *  3. 当报数到达m时，就删除当前报数的节点
+     *  4. 删除节点后， 把剩下的节点继续连城环状，继续
+     *  5. 不停地删除，直到环形链表中只剩一个节点，过程结束
+     *
+     *  没删除一个节点，都需要遍历m次，一共需要删除的节点数为 n-1, 所以时间复杂度为 O(n*m)
+     * @param head
+     * @param m
+     * @return
+     */
+    public Node josephusKilll(Node head, int m) {
+        if (head == null || head.next == head || m < 1) {
+            return head;
+        }
+
+        Node last = head;
+        while (last.next != head) {
+            last = last.next;
+        }
+
+        int count = 0;
+        while (head != last) {
+            if (++count == m) {
+                last.next = head.next;
+                count = 0;
+            } else {
+                last = last.next;
+            }
+            head = last.next;
+        }
+        return head;
+    }
 }
