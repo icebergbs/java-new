@@ -98,4 +98,53 @@ public class C06_1x_环形单链表的约瑟夫问题 {
         }
         return head;
     }
+
+
+/*
+  举个例子，环形链表为： 1->2->3->4->5->1, 这个链表节点数为n=5, m=3.
+  通过不断删除的方式，最后节点4会活下来。但是我们可以不用一直删除的方式，而是用进
+阶的方法，根据n与m的值，直接算出是第4个节点最终会活下来，接下来找到节点4即可。
+  到底怎么直接算出来？ 首先，如果环形链表节点数为n, 我们做如下定义：从这个环形
+链表的头节点开始编号，头节点编号为1，头节点的下一个节点编号为2，...，最后一个节点
+编号为n。然后考虑如下问题：
+  最后只剩下一个节点，这个幸存节点在只由自己组成的环中编号为1，记为Num(1)=1;
+  在由两个节点组成的环中，这个幸存节点的编号是多少呢？假设编号是Num(2);
+  ......
+  在由i-1个节点组成的环中，这个幸存节点的编号是多少呢？假设编号是Num(i-1);
+  在由i个节点组成的环中，这个幸存节点的编号是多少呢？假设编号是Num(i);
+  ......
+  在由n个节点组成的环中，这个幸存节点的编号是多少呢？假设编号是Num(n);
+  我们已经知道Num(1)=1,如果再确定Num(i-1)和Num(i)到达是什么关系，就可以逐渐求出
+Num(n)了，下面是求解过程。
+ */
+
+    /**
+     * @param head
+     * @param m
+     * @return
+     */
+    public Node josephusKill2(Node head, int m) {
+        if (head == null || head.next == head || m < 1) {
+            return head;
+        }
+        Node cur = head.next;
+        int tmp = 1;  //tmp -> list size
+        while (cur != head) {
+            tmp++;
+            cur = cur.next;
+        }
+        tmp = getLive(tmp, m);  // tmp -> service nod position
+        while (--tmp != 0) {
+            head = head.next;
+        }
+        head.next = head;
+        return head;
+    }
+
+    private int getLive(int i, int m) {
+        if (i == 1) {
+            return 1;
+        }
+        return (getLive(i - 1, m) + m - 1);
+    }
 }
