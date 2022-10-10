@@ -116,10 +116,42 @@ public class C07_1x_判断一个链表是否为回文结构 {
   链表1->2->3->2->1,左办区： 1,2; 右半区为：2,1
   方法二就是把整个链表的右半部分压入栈中，压入完成后，在检查栈顶到栈底值出现的顺
 序是否和链表左半部分的值相对应。
- */
-    public boolean isHuiWenStruct2(Node head) {
+  例如：
+  链表1->2->2->1, 链表的右半部分压入栈中后，从栈顶到栈底为1，2. 链表的左半部
+分也是1，2。 所以这个链表是回文结构。
+  方法二可以直观地理解为将链表的右半部分“折过去”， 然后让它和左半部分比较，如图
+2-5所示。
+                图2-5
 
-        return false;
+ */
+
+    /**
+     * 方法二
+     * @param head
+     * @return
+     */
+    public boolean isPalindrome2(Node head) {
+        if (head == null || head.next == null) {
+            return true;
+        }
+        Node right = head.next;
+        Node cur = head;
+        while (cur.next != null && cur.next.next != null) {
+            right = right.next;
+            cur = cur.next.next;
+        }
+        Stack<Node> stack = new Stack<>();
+        while (right != null) {
+            stack.push(right);
+            right = right.next;
+        }
+        while (!stack.isEmpty()) {
+            if (head.value != stack.pop().value) {
+                return false;
+            }
+            head = head.next;
+        }
+        return true;
     }
 
 }
