@@ -134,6 +134,7 @@ public class C07_1x_判断一个链表是否为回文结构 {
         if (head == null || head.next == null) {
             return true;
         }
+        /**  找链表右半区开始节点 */
         Node right = head.next;
         Node cur = head;
         while (cur.next != null && cur.next.next != null) {
@@ -152,6 +153,46 @@ public class C07_1x_判断一个链表是否为回文结构 {
             head = head.next;
         }
         return true;
+    }
+
+/*
+  方法三不需要栈和其他数据结构， 只用有限几个变量，其额外空间复杂度为O(1), 就可以
+在时间复杂度为O(N）内完成所有的过程，也就是满足进阶的要求。
+  1. 改变链表右半区的结构，使整个右半区反转，最后指向中间节点。
+     例如：
+     链表 1->2->3->2->1, 通过这一步将其调整之后的结构如图 2-6所示。
+     链表 1->2->3->3->2->1, 将其调整之后的结构如图 2-7所示。
+                 图 2-6   图 2-7
+
+  我们将左半区的第一个节点（也就是原链表的头节点）记为leftStart, 右半区反转之后
+最右边的节点（也就是原链表的最后一个节点）记为rightStart
+  2. leftStart和rightStart同时向中间点移动， 移动每一步时都比较leftStart和
+rightStart节点的值，看是否一样。
+  3. 不管最后返回的是true还是false, 在返回前都应该把链表恢复成原来的样子。
+  4. 链表恢复后，返回检查结果。
+  粗看起来，虽然方法三的整个过程也没有多少难度，但要想用有限几个变量完成以上所有的
+操作，在实现上还是比较考察代码实现能力的
+
+ */
+
+    /**
+     * 方法三
+     * @param head
+     * @return
+     */
+    public boolean isPalindrome3(Node head) {
+        if (head == null || head.next == null) {
+            return true;
+        }
+        /**  找链表右半区开始节点 */
+        Node right = head.next;
+        Node cur = head;
+        while (cur.next != null && cur.next.next != null) {
+            right = right.next;
+            cur = cur.next.next;
+        }
+
+        return false;
     }
 
 }
