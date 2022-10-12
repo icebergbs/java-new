@@ -180,19 +180,54 @@ rightStart节点的值，看是否一样。
      * @param head
      * @return
      */
-    public boolean isPalindrome3(Node head) {
+    public boolean isPalindrome3xx(Node head) {
         if (head == null || head.next == null) {
             return true;
         }
         /**  找链表右半区开始节点 */
+        Node mid = head;
         Node right = head.next;
         Node cur = head;
+        Node end = head;
         while (cur.next != null && cur.next.next != null) {
+            mid = right;
             right = right.next;
             cur = cur.next.next;
         }
+        end = cur.next;
 
-        return false;
+        //反转右半区
+        mid.next = null;
+        Node r = right;
+        Node rp = mid;
+        while (r.next != null) {
+            Node tmp = r;
+            r = r.next;
+            tmp.next = rp;
+            rp = tmp;
+        }
+        r.next = rp;
+        //比较
+        Node leftStart = head;
+        Node rightStart = end;
+        while (leftStart != null) {
+            if (leftStart != rightStart) {
+                return false;
+            }
+            leftStart = leftStart.next;
+            rightStart = rightStart.next;
+        }
+        //恢复
+        Node rNext = null;
+        while (end != mid) {
+            Node tmp = end;
+            end = end.next;
+            tmp.next = rNext;
+            rNext = tmp;
+        }
+        mid.next = rNext;
+
+        return true;
     }
 
 }
