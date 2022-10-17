@@ -247,29 +247,29 @@ rightStart节点的值，看是否一样。
             n1 = n1.next;  // n1 -> 中部
             n2 = n2.next.next; // n2 -> 结尾
         }
-        n2 = n1.next;
-        n1.next = null;
+        n2 = n1.next;    // n2 -> 右部分第一个节点
+        n1.next = null;  // mid.next -> null
         Node n3 = null;
-        while (n2 != null) {
-            n3 = n2.next;
-            n2.next = n1;
-            n1 = n2;
-            n2 = n3;
+        while (n2 != null) {    // 右半区反转
+            n3 = n2.next;       // n3 -> 保存下一个节点
+            n2.next = n1;       // 下一个反转节点
+            n1 = n2;            // n1 移动
+            n2 = n3;            // n2 移动
         }
-        n3 = n1;
-        n2 = head;
+        n3 = n1;        // n3 -> 保存最后一个节点
+        n2 = head;      // n2 -> 左边第一个节点
         boolean res = true;
-        while (n1 != null && n2 != null) {
+        while (n1 != null && n2 != null) {   // 检查回文
             if (n2.value != n1.value) {
                 res = false;
                 return res;
             }
-            n1 = n1.next;
-            n2 = n2.next;
+            n1 = n1.next;     // 从左到中部
+            n2 = n2.next;     // 从右到中部
         }
         n1 = n3.next;
         n3.next = null;
-        while (n1 != null) {
+        while (n1 != null) {   //恢复列表
             n2 = n1.next;
             n1.next = n3;
             n3 = n1;
