@@ -28,5 +28,47 @@ public class C08_2x_将单向链表按某值划分成左边小_中间相等_右�
         }
     }
 
+    public Node pivot1(Node head, int pivot) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        int len = 0;
+        Node cur =head;
+        while (cur != null) {
+            len++;
+            cur = cur.next;
+        }
+        int[] nodeArr = new int[len];
+        int i = 0;
+        int j = len - 1;
+        int tmp = nodeArr[0];
+        while (i < j) {
+            if (nodeArr[i] < pivot) {
+                i++;
+            } else {
+                tmp = nodeArr[i];
+                while (i < j) {
+                    if (nodeArr[j] > pivot) {
+                        j--;
+                    } else {
+                        nodeArr[i] = nodeArr[j];
+                        nodeArr[j] = tmp;
+                        i++;
+                        j--;
+                        break;
+                    }
+                }
+            }
+        }
+        cur = head;
+        i = 0;
+        while (cur != null) {
+            cur.value = nodeArr[i];
+        }
+        return head;
+    }
+
+
+
 
 }
