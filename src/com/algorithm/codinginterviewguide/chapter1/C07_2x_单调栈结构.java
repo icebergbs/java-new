@@ -34,7 +34,7 @@ public class C07_2x_单调栈结构 {
     private static int[] arr = {3, 4, 1, 5, 6, 2, 7};
 
 
-    public static int[][] getNearPotion(int[] arr, int len) {
+    public static int[][] getNearPotionxx(int[] arr, int len) {
         int[][] res = new int[len][2];
         Stack<Integer> desStack = new Stack<>();
         for (int i = 0; i < arr.length; i++) {
@@ -117,8 +117,14 @@ public class C07_2x_单调栈结构 {
      * @param arr
      * @return
      */
+
     public static int[][] getNearLessNoRepeat(int[] arr) {
         int[][] res = new int[arr.length][2];
+
+        /**
+         *  FUNCTION-******
+         *  单调栈
+         */
         Stack<Integer> stack = new Stack<>();
         for (int i = 0; i < arr.length; i++) {
             while (!stack.isEmpty() && arr[stack.peek()] > arr[i]) {
@@ -179,7 +185,7 @@ public class C07_2x_单调栈结构 {
     }
 
     public static void main(String[] args) {
-        getNearPotion(arr, arr.length);
+        getNearPotionxx(arr, arr.length);
     }
 
 }
