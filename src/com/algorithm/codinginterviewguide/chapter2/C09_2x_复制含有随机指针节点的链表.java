@@ -27,5 +27,17 @@ public class C09_2x_复制含有随机指针节点的链表 {
         }
     }
 
+/*
+  普通解法，时间复杂度为O(N),额外的空间复杂度为O(N),需要使用到哈希表(HashMap)结构，
+  1. 从左到右遍历链表，对每个节点的复制生成的节点副本，都放入对应关系的哈希map中
+  2. 再从左到右遍历链表，设置每个副本节点的next和rand指针
+  3. 将1`节点作为结果返回
+  */
+
+    public Node copyListWithRand1(Node head) {
+
+        return null;
+    }
+
 
 }
