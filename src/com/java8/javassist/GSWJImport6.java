@@ -7,9 +7,9 @@ import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtMethod;
 import javassist.CtNewMethod;
-import javassist.bytecode.AccessFlag;
-import javassist.bytecode.ClassFile;
-import javassist.bytecode.FieldInfo;
+import javassist.bytecode.*;
+import javassist.bytecode.annotation.Annotation;
+import javassist.bytecode.annotation.StringMemberValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,6 +44,19 @@ public class GSWJImport6 {
         //添加一个方法
         CtMethod ti = CtNewMethod.make(
                 "public void testImport(Hello1 h) { h.testImport(); } ", cc);
+
+        ConstPool constpool = cc.getClassFile().getConstPool();
+
+        /**
+         * 设置放注解
+         */
+//        AnnotationsAttribute annotationsAttribute = new AnnotationsAttribute(constpool,
+//                AnnotationsAttribute.visibleTag);
+//        Annotation methodAnnot = new Annotation(JSONField.class.getName(), constpool);
+//        methodAnnot.addMemberValue("name", new StringMemberValue(fieldName, constpool));
+//        annotationsAttribute.addAnnotation(methodAnnot);
+//        ti.getMethodInfo().addAttribute(annotationsAttribute);
+
         cc.addMethod(ti);
 
         //通过反射调用新生成的方法
