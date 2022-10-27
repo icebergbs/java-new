@@ -148,6 +148,12 @@ public class C10_1x_两个单链表生成相加链表 {
         return node;
     }
 
+    /**
+     * 反转链表
+     *    FUNCTION-******
+     * @param head
+     * @return
+     */
     private Node reverseList(Node head) {
         if (head == null) {
             return null;
