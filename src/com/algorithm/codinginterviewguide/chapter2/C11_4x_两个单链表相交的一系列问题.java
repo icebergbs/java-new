@@ -137,14 +137,58 @@ slow指针依然每次移动一步，然后继续遍历。
 终点，而这里是把loop1{loop2}作为链表的终点。
   2. 如果loop1 != loop2, 两个链表不相交的拓扑结构如图2-9所示。两个链表相交的拓扑结构
      如图2-10 所示
-     如何分辨是这两种拓扑结构中的哪一种？ 进入步骤3
+  如何分辨是这两种拓扑结构中的哪一种？ 进入步骤3
   3. 让链表1从loop1出发，因为loop1和之后的所以节点都在环上，所以将来一定能回到loop1,如果
 回到loop1之前并没有遇到loop2,说明两个链表的拓扑结构如图2-9所示，也就是不相交，直接返回null;
 如果回到loop1之前遇到了loop2，说明两个链表的拓扑结构如图2-10所示，也就是相交。因为loop1和
 loop2都在两天链表上，只不过loop1是离链表1较近的节点，loop2是离链表2较近的节点，所以，此时
 返回loop1或loop2都可以。
 
-
  */
+    /**
+     * 问题二 实现
+     * @param head1
+     * @return
+     */
+    public Node bothLoop(Node head1, Node loop1, Node head2, Node loop2) {
+        Node cur1 = null;
+        Node cur2 = null;
+        if (loop1 == loop2) {
+            cur1 = head1;
+            cur2 = head2;
+            int n = 0;
+            while (cur1.next != loop1) {
+                cur1 = cur1.next;
+                n++;
+            }
+            while (cur2.next != loop2) {
+                cur2 = cur2.next;
+                n--;
+            }
+            if (cur1 != cur2) {
+                return loop1;
+            }
+            cur1 = n > 0 ? head1 : head2;
+            cur2 = cur1 == head1 ? head2 : head1;
+            n = Math.abs(n);
+            while (n != 0) {
+                n--;
+                cur1 = cur1.next;
+            }
+            while (cur1 != cur2) {
+                cur1 = cur1.next;
+                cur2 = cur2.next;
+            }
+            return cur1;
+
+        } else {
+
+
+        }
+
+
+        return null;
+
+    }
 
 }
