@@ -1,5 +1,7 @@
 package com.algorithm.codinginterviewguide.chapter2;
 
+import com.sun.org.apache.bcel.internal.generic.ACONST_NULL;
+
 /**
  * 题目:
  *      在本题中,单链表可能有环,也可能无环.给定两个单链表的头节点head1 和 head2,
@@ -182,13 +184,34 @@ loop2都在两天链表上，只不过loop1是离链表1较近的节点，loop2�
             return cur1;
 
         } else {
-
-
+            cur1 = loop1.next;
+            while (cur1 != loop1) {
+                if (cur1 == loop2) {
+                    return loop1;
+                }
+                cur1 = cur1.next;
+            }
+            return null;
         }
+    }
 
 
+    /**
+     * 全部过程 代码
+     */
+    public Node getIntersectNode(Node head1, Node head2) {
+        if (head1 == null || head2 == null) {
+            return null;
+        }
+        Node loop1 = getLoopNode(head1);
+        Node loop2 = getLoopNode(head2);
+        if (loop1 == null && loop2 == null) {
+            return noLoop(head1, head2);
+        }
+        if (loop1 != null && loop2 != null) {
+            return getIntersectNode(head1, head2);
+        }
         return null;
-
     }
 
 }
