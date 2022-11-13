@@ -47,17 +47,18 @@ public class C12_2x_将单链表的每K个节点之间逆序 {
      * @param head
      * @return
      */
-    private Node reverseList(Node head, Node end) {
+    private void reverseList(Node head, Node end) {
         Node next = null;
         Node pre = null;
-        while (head != end) {
-            next = head.next;
-            head.next = pre;
-            pre = head;
-            head = next;
+        Node cur = head;
+        while (cur != end) {
+            next = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = next;
         }
-        head.next = pre;
-        return pre;
+        cur.next = pre;
+        return;
     }
 
 
