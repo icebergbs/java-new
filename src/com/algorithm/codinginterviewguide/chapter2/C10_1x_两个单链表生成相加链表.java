@@ -149,8 +149,7 @@ public class C10_1x_两个单链表生成相加链表 {
     }
 
     /**
-     * 反转链表
-     *    FUNCTION-******
+     *    FUNCTION-****** 反转链表
      * @param head
      * @return
      */

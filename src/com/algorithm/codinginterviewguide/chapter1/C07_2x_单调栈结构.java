@@ -122,8 +122,8 @@ public class C07_2x_单调栈结构 {
         int[][] res = new int[arr.length][2];
 
         /**
-         *  FUNCTION-******
-         *  单调栈
+         *  FUNCTION-******  单调栈
+         *
          */
         Stack<Integer> stack = new Stack<>();
         for (int i = 0; i < arr.length; i++) {
