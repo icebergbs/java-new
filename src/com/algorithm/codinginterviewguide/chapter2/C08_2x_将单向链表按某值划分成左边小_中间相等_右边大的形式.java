@@ -109,8 +109,8 @@ arrPartition(). 实现的具体解释请参考“数组类似partiton的调整�
     }
 
     /**
-     * FUNCTION-******
-     * 改进了快速排序中partition的调整过程
+     * FUNCTION-******  改进了快速排序中partition的调整过程
+     *
      * @param nodeArr
      * @param pivot
      */
