@@ -1,5 +1,9 @@
 package com.design.oop.c09;
 
+/**
+ * 基于接口而非实现编程
+ * 如何将这条原则应用到实战中？
+ */
 // ImageStore的使用举例
 public class ImageProcessingJob {
 

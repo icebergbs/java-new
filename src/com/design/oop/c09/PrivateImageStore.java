@@ -1,5 +1,6 @@
 package com.design.oop.c09;
 
+
 public class PrivateImageStore implements ImageStore{
     @Override
     public String upload(Image image, String bucketName) {
