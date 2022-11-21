@@ -1,5 +1,7 @@
 package com.algorithm.codinginterviewguide.chapter2;
 
+import java.util.Stack;
+
 /**
  * 题目:
  *   给定一个单链表的头节点head, 实现一个调整单链表的函数，使得每K个节点之间逆序。
@@ -69,8 +71,57 @@ public class C12_2x_将单链表的每K个节点之间逆序 {
 /*
     方法一： 时间复杂度为O(N), 额外的空间复杂度为O(K)
     利用栈结构
-    1. 从左
+    1. 从左到右遍历链表，如果栈的大小不等于k, 就将节点不断压入栈中
+    2. 当栈的大小第一次达到k时，说明第一次凑齐了k个节点节点进行逆序，从栈中依次弹出这些节点
+，并根据弹出的顺序重新连接，这一组逆序完成后，需要记录一下新的头部，同时第一组的最后一个节点
+（原来是头节点）应该连接下一个节点。
+    3. 步骤二之后，当栈的大小每次到达K时，逆序节点。这一组逆序完成后，该组的第一个节点（原来
+是该组最后一个节点）应该被上一组的最后一个节点连接上，这一组的最后一个节点（原来是该组第一个节点）
+应该连接下一个节点，然后继续去凑下一组，直到链表都被遍历完。
+    4. 最后应该返回newHead,作为链表新的头节点。
  */
+    /**
+     *  方法一： 具体实现
+     * @param head
+     * @param k
+     * @return
+     */
+    public Node reverseKNode1(Node head, int k) {
+        if (k > 2 ) {
+            return head;
+        }
+        Stack<Node> stack = new Stack<>();
+        Node newHead = head;
+        Node cur = head;
+        Node pre = null;
+        Node next = null;
+        while (cur != null) {
+            next = cur.next;
+            stack.push(cur);
+            if (stack.size() == k) {
+                pre = resign1(stack, pre, next);
+                newHead = newHead == head ? cur : newHead;
+            }
+            cur = next;
+        }
+        return newHead;
+    }
+
+    public Node resign1(Stack<Node> stack, Node left, Node right) {
+        Node cur = stack.pop();
+        if (left != null) {
+            left.next = cur;
+        }
+        Node next = null;
+        while (!stack.isEmpty()) {
+            next = stack.pop();
+            cur.next = next;
+            cur = next;
+        }
+        cur.next = right;
+        return cur;
+    }
+
 
 
 /*
