@@ -17,4 +17,5 @@ public class VirtualWalletController {
     //入账
     public void transfer(Long fromWalletId, Long toWalletId, BigDecimal amount) { return;}//转账
     //省略查询transaction的接口
+
 }

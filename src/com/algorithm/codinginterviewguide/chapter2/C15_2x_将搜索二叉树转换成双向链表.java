@@ -22,6 +22,26 @@ public class C15_2x_将搜索二叉树转换成双向链表 {
             this.value = data;
         }
     }
+
+    public Node treeToDoubleList(Node root) {
+        if (root == null) {
+            return null;
+        }
+        Node cur = root;
+        //找head
+        Node head = null;
+        while (cur.left != null) {
+            cur = cur.left;
+        }
+        head = cur;
+
+        while (cur != null) {
+            if (cur.left != null) {
+                cur = cur.left;
+            }
+
+        }
+    }
  
 
 
