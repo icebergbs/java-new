@@ -1,5 +1,8 @@
 package com.algorithm.codinginterviewguide.chapter2;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 /**
  * 题目:
  *      对二叉树的节点来说，有本身的值域，有指向左孩子节点和右孩子节点的两个指针； 对双
@@ -9,7 +12,7 @@ package com.algorithm.codinginterviewguide.chapter2;
  *
  *      这颗搜索二叉树转换后的双向链表从头到尾依次是1-9。 对每一个节点来说，原来的right
  *    指针等价于转换后的next指针，原来的left指针等级于转换后的last指针，最后返回转换后
- *    的双向链表头节点。
+ *    的双向链表头节点。(两个头)
  *
  */
 public class C15_2x_将搜索二叉树转换成双向链表 {
@@ -22,6 +25,45 @@ public class C15_2x_将搜索二叉树转换成双向链表 {
             this.value = data;
         }
     }
+/*
+    方法一： 用队列等容器收集二叉树中序遍历结果的方法。时间复杂度为O(N), 额外空间复杂度为O(N),
+    1. 生成一个队列，记为queue, 按照二叉树中序遍历的顺序，将每个节点放入queue中，
+    2. 从queue中依次弹出节点，并按照弹出的顺序重连所有的节点即可
+ */
+    public Node conver1(Node head) {
+        if (head == null) {
+            return null;
+        }
+        Queue<Node> queue = new LinkedList<>();
+        inOrderToQueue(head, queue);
+        if (queue.isEmpty()) {
+            return head;
+        }
+        head = queue.poll();
+        Node pre = head;
+        pre.left = null;
+        Node cur = null;
+        while (!queue.isEmpty()) {
+            cur = queue.poll();
+            pre.right = cur;
+            cur.left = pre;
+            pre = cur;
+        }
+        pre.right = null;
+        return head;
+    }
+
+    private void inOrderToQueue(Node head,  Queue<Node> queue) {
+        if (head == null) {
+            return;
+        }
+        inOrderToQueue(head.left, queue);
+        queue.offer(head);
+        inOrderToQueue(head.right, queue);
+    }
+
+
+
 /*
     方法二： 利用递归函数， 时间复杂度为O(N), 额外的空间复杂度为O(h), h为二叉树的高度
     实现递归函数process, process 的输入参数是一颗二叉树的头节点X, 功能是将以X为头的搜索
