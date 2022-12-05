@@ -73,6 +73,11 @@ public class C03_1x_删除链表的中间节点和a除b处的节点 {
 
     }
 
+    /**
+     *  FUNCTION-******    链表中间节点
+     * @param head
+     * @return
+     */
     public Node removeMidNode(Node head) {
         if (head == null || head.next == null){
             return head;
