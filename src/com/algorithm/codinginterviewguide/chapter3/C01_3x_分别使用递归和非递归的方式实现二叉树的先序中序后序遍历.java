@@ -95,7 +95,47 @@ public class C01_3x_分别使用递归和非递归的方式实现二叉树的先
         }
     }
 
+/*
+    用非递归的方式实现二叉树的中序遍历，具体过程如下：
+ */
+    public void inOrderUnRecur(Node head) {
+        System.out.println("in-order: ");
+        if (head != null) {
+            Stack<Node> stack = new Stack<>();
+            stack.add(head);
+            while (!stack.isEmpty() || head != null) {
+                if (head != null) {
+                    stack.add(head);
+                    head = head.left;
+                } else {
+                    head = stack.pop();
+                    System.out.println(head.value + " ");
+                    head = head.right;
+                }
+            }
+        }
+    }
 
+
+    public void inOrderUnRecurxx(Node head) {
+        System.out.println("in-order: ");
+        if (head != null) {
+            Stack<Node> stack = new Stack<>();
+            stack.add(head);
+            while (!stack.isEmpty()) {
+                Node cur = stack.peek();
+                while (cur.left != null) {
+                    stack.add(cur.left);
+                    cur = cur.left;
+                }
+                cur = stack.pop();
+                System.out.println(cur.value + " ");
+                if (cur.right != null) {
+                    stack.add(cur.right);
+                }
+            }
+        }
+    }
 
 
 
