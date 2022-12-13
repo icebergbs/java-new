@@ -97,6 +97,12 @@ public class C01_3x_分别使用递归和非递归的方式实现二叉树的先
 
 /*
     用非递归的方式实现二叉树的中序遍历，具体过程如下：
+    1. 申请一个新的栈，记为stack。初始时，令变量cur=head
+    2. 先把cur节点压入栈中，对以cur节点为头的整颗子树来说，依次把左边界压入栈
+中，既不停地令cur=cur.left, 然后重复步骤2
+    3. 不断重复步骤2，直到发现cur为空，此时从stack中弹出一个节点，记为node。
+打印node的值，并且让cur=node.right, 然后继续重复步骤2。
+    4. 当stack为空且cur为空时，整个过程停止。
  */
     public void inOrderUnRecur(Node head) {
         System.out.println("in-order: ");
@@ -138,5 +144,107 @@ public class C01_3x_分别使用递归和非递归的方式实现二叉树的先
     }
 
 
+/*
+    用非递归的方式实现二叉树的后序遍历有点麻烦，本书实现两种方法提供参考。
+    先介绍使用两个栈实现后序遍历的过程：
+    1. 申请一个栈，记为s1, 然后将头节点head压入s1中。
+    2. 从s1中弹出的节点记为cur, 然后依次将cur的左孩子和右孩子压入s1中
+    3. 在整个过程中，每一个从s1中弹出的节点都放进s2中。
+    4. 不断重复步骤2和步骤3， 直到s1为空，过程停止。
+    5. 从s2中依次弹出节点并打印，打印的顺序就是后序遍历的顺序。
+ */
+
+    public void posOrderUnRecur(Node head) {
+        System.out.println("pos-order: ");
+        if (head != null) {
+            Stack<Node> s1 = new Stack<>();
+            Stack<Node> s2 = new Stack<>();
+            s1.push(head);
+            while (!s1.isEmpty()) {
+                head = s1.pop();
+                s2.push(head);
+                if (head.left != null) {
+                    s1.push(head.left);
+                }
+                if (head.right != null) {
+                    s1.push(head.right);
+                }
+            }
+            while (!s2.isEmpty()) {
+                System.out.println(s2.pop().value + " ");
+            }
+        }
+        System.out.println();
+    }
+/*
+    最后介绍只用一个栈实现后序遍历的过程，具体过程如下：
+    1. 申请一个栈，记为stack, 将头节点压入stack，同时设置两个变量h和c。在整个
+流程中，h代表最近一次弹出并打印的节点，c代表stack的栈顶节点，初始时h为头节点，
+c为null
+    2. 每次令c等于当前stack的栈顶节点，但是不从stack中弹出，此时分如下三种情况。
+            2.1 如果c的左孩子不为null, 并且h不等于c的左孩子，也不等于c的右孩子，则把
+        c的左孩子压入stack中。
+        具体解释以下这么做的原因，首先h的意义是最近一次弹出并打印
+        的节点，所以如果h等于c的左孩子或者右孩子，说明c的左子树与右子树已经打印完毕，
+        此时不应该再将c的左孩子放入stack中。否则，说明左子树还没处理过，那么此时将
+        c的左孩子压入stack中。
+            2.2 如果条件2.1不成立，并且的右孩子不为null, h不等于c的右孩子，则把c的右
+        孩子压入stack中。含义是如果h等于c的右孩子，说明c的右子树已经打印完毕，此时不
+        应该再将c的右孩子放入stack中。否则，说明右自设还没处理过，此时将c的右孩子压入
+        stack中。
+            2.3 如果2.1 和 2.2都不成立，说明c的左子树和右子树都已经打印完毕，那么从
+        stack中弹出c并打印，然后令 h=c.
+    3. 一直重复步骤2， 直到stack为空，过程停止。
+
+    用图 3-1 的例子来说明整个过程。
+    节点1压入stack, 初始时h为节点1，c为null, stack从栈顶到栈底为1.
+    > 令c等于stack的栈顶节点 -- 节点1， 此时步骤2的条件（1）命中，将节点2压入stack,
+h为节点1，stack从栈顶到栈底为2,1
+    > 令c等于stack的栈顶节点 -- 节点2， 此时步骤2的条件（1）命中，将节点4压入stack,
+h为节点1，stack从栈顶到栈底为4,2,1
+    < 令c等于stack的栈顶节点 -- 节点4， 此时步骤2的条件（3）命中，将节点4从stack
+中弹出并打印，h为节点4，stack从栈顶到栈底为2,1
+    > 令c等于stack的栈顶节点 -- 节点2， 此时步骤2的条件（2）命中，将节点5压入stack,
+h为节点4，stack从栈顶到栈底为5,2,1
+    < 令c等于stack的栈顶节点 -- 节点5， 此时步骤2的条件（3）命中，将节点5从stack
+中弹出并打印，h为节点5，stack从栈顶到栈底为2,1
+    < 令c等于stack的栈顶节点 -- 节点2， 此时步骤2的条件（3）命中，将节点2从stack
+中弹出并打印，h为节点2，stack从栈顶到栈底为 1
+    > 令c等于stack的栈顶节点 -- 节点1， 此时步骤2的条件（2）命中，将节点3压入stack,
+h为节点2，stack从栈顶到栈底为3,1
+    > 令c等于stack的栈顶节点 -- 节点3， 此时步骤2的条件（1）命中，将节点6压入stack,
+h为节点2，stack从栈顶到栈底为6,3,1
+    < 令c等于stack的栈顶节点 -- 节点6， 此时步骤2的条件（3）命中，将节点6从stack
+中弹出并打印，h为节点6，stack从栈顶到栈底为 3,1
+    > 令c等于stack的栈顶节点 -- 节点3， 此时步骤2的条件（2）命中，将节点7压入stack,
+h为节点6，stack从栈顶到栈底为7,3,1
+    < 令c等于stack的栈顶节点 -- 节点7， 此时步骤2的条件（3）命中，将节点7从stack
+中弹出并打印，h为节点7，stack从栈顶到栈底为 3,1
+    < 令c等于stack的栈顶节点 -- 节点3， 此时步骤2的条件（3）命中，将节点3从stack
+中弹出并打印，h为节点3，stack从栈顶到栈底为 1
+    < 令c等于stack的栈顶节点 -- 节点1， 此时步骤2的条件（3）命中，将节点1从stack
+中弹出并打印，h为节点1，stack从栈顶到栈底为 null
+ */
+
+    public void posOrderUnRecur2(Node h) {
+        System.out.println("pos-order: ");
+        if (h != null) {
+            Node c = null;
+            Stack<Node> stack = new Stack<>();
+            stack.push(h);
+            while (!stack.isEmpty()) {
+                c = stack.peek();
+                if(c.left != null && h != c.left && h != c.right) {
+                    stack.push(c.left);
+                } else if (c.right != null && h != c.right) {
+                    stack.push(c.right);
+                } else {
+                    System.out.println(stack.pop().value + " ");
+                    h = c;
+                }
+            }
+        }
+        System.out.println();
+    }
 
 }
