@@ -109,7 +109,49 @@ public class C02_2x_打印二叉树的边界节点 {
 /*
     标准二的要求实现过程：
     1. 从头节点开始往下寻找，只要找到第一既有左孩子，又有右孩子的节点，记为h,
-则进入步骤2。在这个过程中，找过的节点都打印
+则进入步骤2。在这个过程中，找过的节点都打印。
+       对于题目的例子来说，即打印：1， 因为头节点直接符合要求，所以打印后没有后续的寻找过程，
+       直接进入步骤2.但如果二叉树如图3-3所示，此时则打印：1，2，3.节点3是从头节点开始往下第一个符合要求的。
+       如果二叉树从上到下一直找到叶节点也不存在符合要求的节点，说明二叉树是棒状结构，
+       那么打印找过的节点后直接返回即可。
+    2. h的左子树先进入步骤3的打印过程：h的右子树再进入步骤4的打印过程；最后返回。
+    3. 打印左边界的延申路径以及h左子树上所有的叶节点，具体请参看printLeftEdge方法。
+    4. 打印右边界的延申路径以及h右子树上所有的叶节点，具体请参看printRightEdge方法。
  */
+    public void printEdge2(Node head) {
+        if (head == null) {
+            return;
+        }
+        System.out.println(head.value + " ");
+        if (head.left != null && head.right != null) {
+            printLeftEdge(head.left, true);
+            printRightEdge(head.right, true);
+        } else {
+            printEdge2(head.left != null ? head.left : head.right);
+        }
+        System.out.println();
+    }
+
+    public void printLeftEdge(Node h, boolean print) {
+        if (h == null) {
+            return;
+        }
+        if (print || (h.left == null && h.right == null)) {
+            System.out.println(h.value + "  ");
+        }
+        printLeftEdge(h.left, print);
+        printLeftEdge(h.right, print && h.left == null ? true : false);
+    }
+
+    public void printRightEdge(Node h, boolean print) {
+        if (h == null) {
+            return;
+        }
+        printRightEdge(h.left, print && h.right == null ? true : false);
+        printRightEdge(h.right, print);
+        if (print || (h.left == null && h.right == null)) {
+            System.out.println(h.value + " ");
+        }
+    }
 
 }
