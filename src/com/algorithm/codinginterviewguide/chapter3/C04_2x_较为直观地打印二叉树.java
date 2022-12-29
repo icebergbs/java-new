@@ -43,7 +43,7 @@ public class C04_2x_较为直观地打印二叉树 {
 
  */
 
-    class Node {
+    static class Node {
         public int value;
         public Node left;
         public Node right;
@@ -52,13 +52,13 @@ public class C04_2x_较为直观地打印二叉树 {
         }
     }
 
-    public void printTree(Node head) {
+    public static void printTree(Node head) {
         System.out.println("Binary Tree:");
         printInOrder(head, 0, "H", 17);
         System.out.println();
     }
 
-    private void printInOrder(Node head, int height, String to, int len) {
+    private static void printInOrder(Node head, int height, String to, int len) {
         if(head == null) {
             return;
         }
@@ -72,12 +72,21 @@ public class C04_2x_较为直观地打印二叉树 {
         printInOrder(head.left, height + 1, "^", len);
     }
 
-    public String getSpace(int num) {
+    public static String getSpace(int num) {
         String space = " ";
         StringBuilder buf = new StringBuilder("");
         for (int i = 0; i < num; i++) {
             buf.append(space);
         }
         return buf.toString();
+    }
+
+    public static void main(String[] args) {
+        Node head = new Node(1);
+        Node left = new Node(2);
+        Node right = new Node(3);
+        head.left = left;
+        head.right = right;
+        printTree(head);
     }
 }
