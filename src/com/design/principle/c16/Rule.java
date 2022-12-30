@@ -9,4 +9,9 @@ public class Rule {
     public long getMaxTps() {
         return 0L;
     }
+
+    public long getMaxErrorCount() {
+        return 0L;
+    }
+
 }
