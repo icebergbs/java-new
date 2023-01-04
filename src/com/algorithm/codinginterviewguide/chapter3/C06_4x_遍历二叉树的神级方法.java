@@ -108,7 +108,74 @@ public class C06_4x_遍历二叉树的神级方法 {
     到达节点5两次，每次遍历其左子树的右边界：10
     到达节点6两次，每次遍历其左子树的右边界：12
     到达节点7两次，每次遍历其左子树的右边界：14
-
+    可以看出，所有右边界的所有节点数量为O(N)，每条右边界都遍历两次，那么遍历所有节树右边界的总代价为O(N)。
+因此，Morris 遍历的时间复杂度还是O(N)
  */
 
+/*
+    根据Morris遍历，加工出先序遍历。
+    1. 对于cur只能到达一次的节点(无左子树的节点)，cur 到达时直接打印
+    2. 对于cur可以到达两次的节点(有左子树的节点)，cur 第一次到达时打印，第二次到不达印。
+    比如，展示流程中 cur 依次达到的顺序 (Morris 序)为:4、2、1、2、3、4、6、5、6、7
+    根据加工出先序遍历的规则，将依次打印:4、2、1、3、6、5、7，这就是先序遍历。
+    序遍历的代码请看如下的 morrisPre方法， morrisPre方法就是 morris 方法的简单改写。
+ */
+    public void morrisPre(Node head) {
+        if (head == null) {
+            return;
+        }
+        Node cur = head;
+        Node mostRight = null;
+        while (cur != null) {
+            mostRight = cur.left;
+            if (mostRight != null) {
+                while (mostRight.right != null && mostRight.right != cur) {
+                    mostRight = mostRight.right;
+                }
+                if (mostRight.right == null) {
+                    mostRight.right = cur;
+                    System.out.println(cur.value + " "); //打印行为
+                    cur = cur.left;
+                    continue;
+                } else {
+                    mostRight.right = null;
+                }
+            } else {
+                System.out.println(cur.value + " "); //打印行为
+            }
+            cur = cur.right;
+        }
+        System.out.println();
+    }
+
+/*
+    中序遍历的代码请看如下morrisin方法，也是 morris 方法的简单改写。
+ */
+    public void morrisIn(Node head) {
+        if (head == null) {
+            return;
+        }
+        Node cur = head;
+        Node mostRight = null;
+        while (cur != null) {
+            mostRight = cur.left;
+            if (mostRight != null) {
+                while (mostRight.right != null && mostRight.right != cur) {
+                    mostRight = mostRight.right;
+                }
+                if (mostRight == null) {
+                    mostRight.right = cur;
+                    cur = cur.left;
+                    continue;
+                } else {
+                    mostRight.right = null;
+                }
+            }
+            System.out.println(cur.value + " "); // 打印行为
+            cur = cur.right;
+        }
+        System.out.println();
+    }
+
 }
+
