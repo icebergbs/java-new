@@ -177,5 +177,76 @@ public class C06_4x_遍历二叉树的神级方法 {
         System.out.println();
     }
 
+/*
+    后序遍历的实现，其实也是Morris遍历的改写， 但包含稍微复杂的调整过程。
+    根据Morris遍历，加工出后序遍历。
+    1. 对于cur只能到达一次的节点（无左子树的节点），直接跳过，没有打印行为。
+    2. 对于cur可以到达两次的任何一个节点（有做只是的节点）X, cur第一次到达X时没有打印行为；
+       当第二次到达X时，逆序打印X左子树的右边界。
+    3. cur遍历完成后，逆序打印整颗树的右边界。
+    以图3-9来举例说明后序遍历的打印过程，这颗二叉树的Morris序为：4，2，1，2，3，4，6，5，6，7
+    当第二次到达2时，逆序打印节点2左子树的右边界：1
+    当第二次到达4时，逆序打印节点4左子树的右边界：3，2
+    当第二次到达6时，逆序打印节点6左子树的右边界：5
+    cur遍历完成后，逆序打印整颗树的右边界：7，6，4
+    可以看到这个顺序就是后序遍历的顺序。但是我们应该如何实现逆序打印一棵树的右边界？
+因为整个过程的额外空间复杂度要求是O(1), 所以逆序打印一棵右边界的过程中，是不能申请额外的数据结构的。
+为了更好地说明整个过程，下面举一个右边界比较长的例子，如图3-14所示。
+    假设cur第二次到达了A, 并且要逆序打印节点A左子树的右边界，首先E.R指向null,然后将右边界逆序调整成
+如图3-15所示，整个过程类似单链表的逆序操作。
+    这样我们就可以从节点E开始，依次通过每个节点的right指针逆序打印整个左边界。
+在打印完B后，把右边界再逆序一次，调回来即可。
+    Morris后序遍历的具体实现，代码请看如下morrisPos方法，
+ */
+    public void morroisPos(Node head) {
+        if (head == null) {
+            return;
+        }
+        Node cur = head;
+        Node mostRight = null;
+        while (cur != null) {
+            mostRight = cur.left;
+            if (mostRight != null) {
+                while (mostRight.right != null && mostRight.right != cur) {
+                    mostRight = mostRight.right;
+                }
+                if (mostRight.right == null) {
+                    mostRight.right = cur;
+                    cur = cur.left;
+                    continue;
+                } else {
+                    mostRight.right = null;
+                    printEdge(cur.left);
+                }
+            }
+            cur = cur.right;
+        }
+        printEdge(head);
+        System.out.println();
+    }
+
+    public void printEdge(Node head) {
+        Node tail = reverseEdge(head);
+        Node cur = tail;
+        while (cur != null) {
+            System.out.println(cur.value + " ");
+            cur = cur.right;
+        }
+    }
+
+    public Node reverseEdge(Node from) {
+        Node pre = null;
+        Node next = null;
+        while (from != null) {
+            next = from.right;
+            from.right = pre;
+            pre = from;
+            from = next;
+        }
+        return pre;
+    }
+
+
+
 }
 
